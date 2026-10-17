@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1220">
+    <title>FreightMesh | Responsible AI Dashboard</title>
+    <link rel="stylesheet" href="/dashboard/assets/dashboard.css">
+    <script src="/dashboard/assets/dashboard.js" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FREIGHTMESH · GOOGLE ADK DEMO</p>
+          <h1>Responsible AI dashboard</h1>
+          <p class="subhead">Auditable freight plans, guardrail signals, and measured API performance.</p>
+        </div>
+        <span class="status"><span class="dot"></span> Deterministic API ready</span>
+      </header>
+
+      <section class="metrics" aria-label="Run and token metrics">
+        <article class="metric"><span>Completed runs</span><strong id="runs">0</strong><small>Since API start</small></article>
+        <article class="metric"><span>Average latency</span><strong id="latency">—</strong><small id="latency-sample">No measured runs</small></article>
+        <article class="metric"><span>LLM input tokens</span><strong id="input-tokens">0</strong><small>Exact usage on /run</small></article>
+        <article class="metric"><span>LLM output tokens</span><strong id="output-tokens">0</strong><small>LLM is not called by /run</small></article>
+      </section>
+
+      <section class="grid">
+        <article class="panel run-panel">
+          <div class="panel-title">
+            <div><p class="eyebrow">CONTROLLED SIMULATION</p><h2>Run an optimization</h2></div>
+            <span class="pill">No free-text prompt</span>
+          </div>
+          <form id="run-form">
+            <label for="objective">Planning objective</label>
+            <select id="objective" name="objective">
+              <option value="cost">Lowest feasible cost</option>
+              <option value="carbon">Carbon-aware trade-off</option>
+            </select>
+            <label for="deadline">Optional Amazon deadline what-if</label>
+            <input id="deadline" name="amazon_deadline" type="time">
+            <button type="submit">Run deterministic plan</button>
+            <p class="hint">Only allow-listed values are sent. No name, email, phone number, or arbitrary instructions are accepted.</p>
+          </form>
+          <p id="run-error" class="error" role="alert"></p>
+          <h3>Latest run evidence</h3>
+          <pre id="run-result" aria-live="polite">Run an optimization to see the source-backed plan and constraint checks.</pre>
+        </article>
+
+        <article class="panel">
+          <div class="panel-title">
+            <div><p class="eyebrow">PRIVACY & SAFETY</p><h2>Guardrail status</h2></div>
+            <span id="guardrail-status" class="pill good">Active</span>
+          </div>
+          <p id="guardrail-summary" class="muted">Loading guardrail metrics…</p>
+          <ul id="guardrail-list" class="guardrails"></ul>
+          <div class="notice">
+            <strong>Scope matters</strong>
+            <p>Pattern filters are not a guarantee. ADK Web stores chat history; do not use it for personal or confidential data. This dashboard keeps only approved objective/deadline fields, not raw request bodies or free text.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">
+          <div><p class="eyebrow">OBSERVED API CALLS</p><h2>Recent runs</h2></div>
+          <button id="refresh" class="secondary" type="button">Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Run ID</th><th>Objective</th><th>Result</th><th>Latency</th><th>LLM tokens</th></tr></thead>
+            <tbody id="history"><tr><td colspan="5" class="empty">No runs yet.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>
+        <span id="scope">Metrics are process-local and reset when the API restarts.</span>
+        <a href="/docs">API documentation</a>
+        <a href="/evaluation">Default evaluation JSON</a>
+      </footer>
+    </main>
+  </body>
+</html>
